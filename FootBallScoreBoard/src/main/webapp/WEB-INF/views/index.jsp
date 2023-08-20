@@ -6,22 +6,16 @@
 <%
   // Declare and initialize the ArrayList of Match objects
   
-  ScoreBoard sb = (ScoreBoard)request.getAttribute("matchList");
-  
-  // Sort the ArrayList in descending order of total score and updated score time
- /* Collections.sort(sb.getMatchList().get(index), (m1, m2) -> {
-    if (m1.getTotalScore() == m2.getTotalScore()) {
-      return m2.getUpdatedScoreTime().compareTo(m1.getUpdatedScoreTime());
-    } else {
-      return m2.getTotalScore() - m1.getTotalScore();
-    }
-  });*/
+ ArrayList<Match> matchList = (ArrayList<Match>)request.getAttribute("matchList");
+	
+
 %>
 
 <!DOCTYPE html>
 <html>
 <head>
   <title>Matches</title>
+ 
 </head>
 <body>
   <table >
@@ -29,7 +23,7 @@
   Football Score Board
   </thead>
     <tbody>
-      <%  for (Match match : sb.getMatchList()) { %>
+      <%  for (Match match : matchList) { %>
         <tr>
           <td><%= match.getHomeTeamName() %></td>
           <td><%= match.getHomeTeamScore() %></td>
@@ -40,10 +34,26 @@
           <td><%= match.getAwayTeamScore() %></td>
           <td>
             <% if (match.getHomeTeamScore() == "" && match.getAwayTeamScore() == "") { %>
-              <a href="#">Start Match</a>
-            <% } else { %>
-              <a href="#">Update Score</a>
-              <a href="#">Finish Match</a>
+              	<form action="<%=request.getContextPath() %>/startMatch" method="get">
+  				<input type="hidden" name="matchId" value="<%=match.getMatchId() %>">
+  				<input type="submit" value="Start Match">
+				</form>
+            <% }
+            %><% else { %>
+            <td>
+            <form action="updatePage" method="post">
+           		
+  				<input type="hidden" name="matchId" value="<%=match.getMatchId() %>">
+  				<input type="hidden" name="matchList" value="<%=matchList %>">
+  				<input type="submit" value="Update Score">
+				</form>
+                   </td> <td>
+              <form action="<%=request.getContextPath() %>/finishMatch" method="post">
+           		
+  				<input type="hidden" name="matchId" value="<%=match.getMatchId() %>">
+  				<input type="submit" value="Finish Match">
+				</form>
+               </td>
             <% } %>
           </td>
           </tr>
@@ -56,5 +66,6 @@
      
     </tbody>
   </table>
+ 
 </body>
 </html>
