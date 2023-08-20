@@ -15,14 +15,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.sr.model.Match;
 import com.sr.model.ScoreBoard;
 import com.sr.service.MatchService;
-import com.sr.service.MatchServiceImpl;
 @Controller
 public class MatchController {
 		
 	
 		
-		private ArrayList<Match> matchList= new ArrayList<Match>();
-	    private ScoreBoard scoreBoard= new ScoreBoard(matchList);
+		public ArrayList<Match> matchList= new ArrayList<Match>();
+	    public ScoreBoard scoreBoard= new ScoreBoard(matchList);
 	    
 	    @RequestMapping("/")
 	    public String getDashboardData(Model model) {
