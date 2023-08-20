@@ -10,18 +10,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.sr.model.Match;
 import com.sr.model.ScoreBoard;
 import com.sr.service.MatchService;
 @Controller
-public class MatchController {
+public class MatchController{
 		
 	
 		
-		public ArrayList<Match> matchList= new ArrayList<Match>();
-	    public ScoreBoard scoreBoard= new ScoreBoard(matchList);
+		private  ArrayList<Match> matchList= new ArrayList<Match>();
+	    private ScoreBoard scoreBoard= new ScoreBoard(matchList);
 	    
 	    @RequestMapping("/")
 	    public String getDashboardData(Model model) {
@@ -45,7 +44,7 @@ public class MatchController {
 	    	scoreBoard.getMatchList().add(m7);
 	    	}
 	    	else{
-	    		System.out.println("else");
+	    		
 	    		matchList= scoreBoard.getMatchList();
 	    		
 	    		Collections.sort(matchList, new Comparator<Match>() {
@@ -70,11 +69,10 @@ public class MatchController {
 	        return "/";
 	    }
 
-	    @RequestMapping(value="/startMatch", method = RequestMethod.GET)
+	    @RequestMapping(value="/startMatch", method = RequestMethod.POST)
 	    public String startMatch(HttpServletRequest request, Model model) {
 	    	MatchService service= new MatchService();
 	    	int matchId = Integer.parseInt(request.getParameter("matchId"));
-	    	//matchList = request.getParameter("matchList");
 	    	matchList = service.startMatch(matchId,matchList);
 			
 	    	model.addAttribute("matchList", matchList);
@@ -85,10 +83,15 @@ public class MatchController {
 	    public String updatePage(HttpServletRequest request, Model model) {
 	    	MatchService service= new MatchService();
 	    	int matchId = Integer.parseInt(request.getParameter("matchId"));
+	    	int homeTeamScore =  Integer.parseInt(request.getParameter("homeTeamScore"));
+	    	int awayTeamScore =  Integer.parseInt(request.getParameter("awayTeamScore"));
 	    	matchList = service.startMatch(matchId,matchList);
 			
 	    	
 	    	model.addAttribute("matchId", matchId);
+	    	model.addAttribute("matchList", matchList);
+	    	model.addAttribute("homeTeamScore", homeTeamScore);
+	    	model.addAttribute("awayTeamScore", awayTeamScore);
 	    	model.addAttribute("matchList", matchList);
 	    	return "updateScore";
 	    }
@@ -115,12 +118,7 @@ public class MatchController {
 	    	return "/";
 	    }
 
-	    @RequestMapping("/dashboard")
-	    public ArrayList<Match> getDashboard(Model model) {
-	        // Logic to retrieve the game details from the ScoreBoard class and pass it to the JSP
-	        // Return the dashboard page
-	    	return scoreBoard.getMatchList();
-	    }
-	}
+	    
+}
 
 

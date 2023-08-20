@@ -13,15 +13,10 @@
 <%
  
   ArrayList<Match> matchList = (ArrayList<Match>)request.getAttribute("matchList");
- Integer matchId = (Integer) request.getAttribute("matchId");
-  // Sort the ArrayList in descending order of total score and updated score time
- /* Collections.sort(sb.getMatchList().get(index), (m1, m2) -> {
-    if (m1.getTotalScore() == m2.getTotalScore()) {
-      return m2.getUpdatedScoreTime().compareTo(m1.getUpdatedScoreTime());
-    } else {
-      return m2.getTotalScore() - m1.getTotalScore();
-    }
-  });*/
+  Integer matchId = (Integer) request.getAttribute("matchId");
+  Integer homeTeamScore = (Integer) request.getAttribute("homeTeamScore");
+  Integer awayTeamScore = (Integer) request.getAttribute("awayTeamScore");
+  
 %>
 <form action="<%=request.getContextPath() %>/updateScore" method="POST">
    <table>
@@ -34,14 +29,14 @@
     </tr>
     <tr>
     <td>Home Team Score</td>
-    <td> <input type="text" name="homeTeamScore" value=<%=match.getHomeTeamScore() %>>
+    <td> <input type="text" name="homeTeamScore" value=<%=homeTeamScore %> maxlength="1" pattern="[0-9]" required>
     </td>
     </tr><tr>
     <td>Away Team Name</td>
     <td> <%= match.getAwayTeamName() %></td>
      </tr><tr>
     <td>Away Team Score</td>
-    <td> <input type="text" name="awayTeamScore" value=<%=match.getAwayTeamScore()%>>
+    <td> <input type="text" name="awayTeamScore" value=<%=awayTeamScore%> maxlength="1" pattern="[0-9]" required>
     </td>
     </tr>
     <tr>
